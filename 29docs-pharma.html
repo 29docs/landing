@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestão Documental para Indústria Farmacêutica — 29docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:       #0B1F4A;
+    --navy2:      #112458;
+    --navy3:      #1A3A6E;
+    --panel:      #0F2654;
+    --panel2:     #162d6a;
+    --orange:     #E8650A;
+    --orange2:    #F07525;
+    --odim:       rgba(232,101,10,0.12);
+    --oborder:    rgba(232,101,10,0.30);
+    --white:      #FFFFFF;
+    --white2:     #C8DAEE;
+    --muted:      #7A9ABF;
+    --line:       rgba(255,255,255,0.07);
+    --line2:      rgba(255,255,255,0.13);
+    --red-dim:    rgba(239,68,68,0.12);
+    --red-border: rgba(239,68,68,0.28);
+    --red:        #EF4444;
+    --green-dim:  rgba(52,211,153,0.1);
+    --green:      #34D399;
+    --display:    'Barlow Condensed', sans-serif;
+    --body:       'Barlow', sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--navy);color:var(--white);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  body{max-width:960px;margin:0 auto;padding:0 28px 80px;position:relative;overflow-x:hidden}
+
+  /* DIAMOND TEXTURE — 29docs brand */
+  body::before{content:'';position:fixed;inset:0;
+    background-image:linear-gradient(45deg,rgba(255,255,255,.016) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,.016) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,.016) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,.016) 75%);
+    background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0;pointer-events:none;z-index:0}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes lineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  .a1{animation:fadeUp .6s .05s ease both}
+  .a2{animation:fadeUp .6s .18s ease both}
+  .a3{animation:fadeUp .6s .30s ease both}
+  .a4{animation:fadeUp .6s .42s ease both}
+  .a5{animation:fadeUp .6s .54s ease both}
+  .a6{animation:fadeUp .6s .66s ease both}
+
+  /* HEADER */
+  .hdr{display:flex;align-items:center;justify-content:space-between;padding:28px 0 36px;border-bottom:1px solid var(--line2);margin-bottom:56px;position:relative;z-index:1}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo-box{width:40px;height:40px;background:var(--white);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .logo-box svg{width:24px;height:24px}
+  .logo-name{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:.05em;color:var(--white)}
+  .hdr-tag{font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);padding:5px 14px;border:1px solid var(--oborder);border-radius:4px;background:var(--odim)}
+
+  /* EMPATHY HERO — customer's world first */
+  .hero{position:relative;z-index:1;padding-bottom:60px}
+  .hero-context{display:inline-flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line2);border-radius:6px;padding:8px 16px;margin-bottom:28px}
+  .ctx-dot{width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:0 0 6px var(--orange);animation:blink 2s infinite;flex-shrink:0}
+  .ctx-txt{font-size:12px;font-weight:500;color:var(--white2);letter-spacing:.04em}
+  .hero h1{font-family:var(--display);font-size:clamp(40px,6.5vw,64px);font-weight:800;line-height:1.0;letter-spacing:.01em;text-transform:uppercase;color:var(--white);max-width:820px;margin-bottom:6px}
+  .hero h1 .o{color:var(--orange)}
+  .hero-line{width:56px;height:3px;background:var(--orange);margin:20px 0 22px;transform-origin:left;animation:lineGrow .9s .5s ease both}
+  .hero-sub{font-size:17px;font-weight:300;font-style:italic;color:var(--white2);max-width:640px;line-height:1.75;margin-bottom:36px;border-left:3px solid var(--orange);padding-left:18px}
+
+  /* SCENARIO CARDS — "Does this sound familiar?" */
+  .scenario-head{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .scenarios{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:52px}
+  @media(max-width:660px){.scenarios{grid-template-columns:1fr}}
+  .sc{background:var(--panel);border:1px solid var(--line2);border-radius:8px;padding:16px 18px;border-top:3px solid var(--red)}
+  .sc-ico{font-size:18px;margin-bottom:8px;display:block}
+  .sc-txt{font-size:13px;font-weight:400;color:var(--white2);line-height:1.55;font-style:italic}
+  .sc-txt strong{color:var(--white);font-style:normal;font-weight:600}
+
+  /* SECTION UTILITY */
+  .section{position:relative;z-index:1;margin-bottom:60px}
+  .s-label{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+  .s-label::before{content:'';width:24px;height:2px;background:var(--orange);flex-shrink:0}
+  .s-title{font-family:var(--display);font-size:clamp(24px,4vw,36px);font-weight:800;text-transform:uppercase;letter-spacing:.02em;line-height:1.05;color:var(--white);max-width:700px;margin-bottom:10px}
+  .s-sub{font-size:15px;font-weight:300;color:var(--white2);max-width:600px;line-height:1.75;margin-bottom:30px}
+  hr.div{border:none;border-top:1px solid var(--line);margin:0 0 60px;position:relative;z-index:1}
+
+  /* PAIN → CONSEQUENCE LAYOUT */
+  .pain-rows{display:flex;flex-direction:column;gap:3px}
+  .pain-row{display:grid;grid-template-columns:1fr 16px 1fr;gap:0;align-items:stretch}
+  @media(max-width:640px){.pain-row{grid-template-columns:1fr;gap:3px}}
+  .pain-left{background:var(--panel);border:1px solid var(--red-border);border-radius:8px 0 0 8px;padding:20px 22px;display:flex;gap:14px;align-items:flex-start}
+  .pain-arrow{background:var(--navy2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--orange)}
+  @media(max-width:640px){.pain-arrow{display:none}}
+  .pain-right{background:var(--navy2);border:1px solid var(--line2);border-radius:0 8px 8px 0;padding:20px 22px;display:flex;gap:14px;align-items:flex-start}
+  @media(max-width:640px){.pain-left,.pain-right{border-radius:8px}}
+  .pain-ico{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;margin-top:2px}
+  .ico-red{background:var(--red-dim);border:1px solid var(--red-border)}
+  .ico-orange{background:var(--odim);border:1px solid var(--oborder)}
+  .pain-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+  .lbl-red{color:var(--red)}
+  .lbl-orange{color:var(--orange)}
+  .pain-desc{font-size:12px;font-weight:300;color:var(--white2);line-height:1.6}
+  .pain-title-main{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px}
+
+  /* SOLUTION MAPPING */
+  .sol-map{display:flex;flex-direction:column;gap:3px}
+  .sol-row{display:flex;align-items:stretch;gap:0}
+  .sol-num-col{width:56px;background:var(--orange);display:flex;align-items:center;justify-content:center;border-radius:8px 0 0 8px;flex-shrink:0}
+  .sol-num-txt{font-family:var(--display);font-size:28px;font-weight:800;color:var(--white);writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);letter-spacing:.1em}
+  .sol-body{flex:1;background:var(--panel);border:1px solid var(--line2);border-radius:0 8px 8px 0;padding:22px 24px;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  @media(max-width:640px){.sol-body{grid-template-columns:1fr}}
+  .sol-pain-ref{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--red);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .sol-pain-ref::before{content:'';width:16px;height:1px;background:var(--red)}
+  .sol-pain-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:5px}
+  .sol-pain-desc{font-size:12px;font-weight:300;color:var(--white2);line-height:1.6}
+  .sol-fix-ref{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .sol-fix-ref::before{content:'';width:16px;height:1px;background:var(--green)}
+  .sol-fix-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:5px}
+  .sol-fix-desc{font-size:12px;font-weight:300;color:var(--white2);line-height:1.6}
+
+  /* REGULATORY STRIP */
+  .reg-strip{background:var(--panel);border:1px solid var(--line2);border-radius:8px;padding:22px 28px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .reg-label{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:8px;white-space:nowrap}
+  .reg-tag{font-size:12px;font-weight:600;padding:5px 14px;border-radius:4px;background:var(--odim);color:var(--orange);border:1px solid var(--oborder);white-space:nowrap}
+
+  /* OUTCOMES GRID */
+  .outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:640px){.outcomes{grid-template-columns:1fr}}
+  .outcome{background:var(--panel);border:1px solid var(--line2);border-radius:8px;padding:22px 20px;border-top:3px solid var(--orange)}
+  .out-num{font-family:var(--display);font-size:40px;font-weight:800;color:var(--orange);line-height:1;margin-bottom:8px;letter-spacing:.01em}
+  .out-title{font-size:13px;font-weight:600;color:var(--white);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+  .out-desc{font-size:12px;font-weight:300;color:var(--white2);line-height:1.6}
+
+  /* HOW WE WORK */
+  .steps{border:1px solid var(--line2);border-radius:8px;overflow:hidden}
+  .step{display:flex;align-items:flex-start;gap:18px;padding:20px 26px;border-bottom:1px solid var(--line);background:var(--panel);transition:background .2s}
+  .step:last-child{border-bottom:none}
+  .step:hover{background:var(--panel2)}
+  .sn{font-family:var(--display);font-size:24px;font-weight:800;color:var(--orange);min-width:28px;line-height:1;margin-top:3px}
+  .sbody{flex:1}
+  .stitle{font-size:13px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+  .sdesc{font-size:12px;font-weight:300;color:var(--white2);line-height:1.6}
+  .spill{align-self:center;flex-shrink:0;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:var(--odim);color:var(--orange);border:1px solid var(--oborder)}
+
+  /* GREENDOCS FEATURE BAND */
+  .gd-band{background:linear-gradient(135deg,var(--panel2) 0%,var(--navy3) 100%);border:1px solid var(--oborder);border-radius:10px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  @media(max-width:640px){.gd-band{grid-template-columns:1fr}}
+  .gd-label{font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:10px}
+  .gd-title{font-family:var(--display);font-size:clamp(22px,3vw,30px);font-weight:800;text-transform:uppercase;color:var(--white);line-height:1.05;margin-bottom:12px}
+  .gd-desc{font-size:13px;font-weight:300;color:var(--white2);line-height:1.7}
+  .gd-features{display:flex;flex-direction:column;gap:10px}
+  .gd-feat{display:flex;gap:10px;align-items:flex-start}
+  .gd-check{width:20px;height:20px;border-radius:50%;background:var(--odim);border:1px solid var(--oborder);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .gd-check svg{width:10px;height:10px}
+  .gd-feat-txt{font-size:12px;font-weight:400;color:var(--white2);line-height:1.5}
+  .gd-feat-txt strong{color:var(--white);font-weight:600}
+
+  /* CLIENTS */
+  .cli-label{text-align:center;font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  .cli-wrap{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .cli{font-size:12px;font-weight:500;color:var(--muted);padding:6px 16px;border:1px solid var(--line2);border-radius:4px;background:var(--panel);transition:all .18s;cursor:default}
+  .cli:hover,.cli.hl{border-color:var(--oborder);color:var(--orange);background:var(--odim)}
+
+  /* CTA */
+  .cta{background:var(--navy2);border:1px solid var(--oborder);border-radius:10px;padding:52px 40px;text-align:center;position:relative;overflow:hidden;z-index:1}
+  .cta::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--orange2))}
+  .cta-ey{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:14px}
+  .cta-h{font-family:var(--display);font-size:clamp(28px,5vw,44px);font-weight:800;text-transform:uppercase;letter-spacing:.02em;line-height:1.0;color:var(--white);margin-bottom:12px}
+  .cta-s{font-size:15px;font-weight:300;color:var(--white2);max-width:500px;margin:0 auto 32px;line-height:1.75}
+  .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn-a{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;background:var(--orange);color:var(--white);font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:6px;text-decoration:none;transition:background .18s,transform .15s}
+  .btn-a:hover{background:var(--orange2);transform:translateY(-2px)}
+  .btn-b{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;background:transparent;color:var(--white);font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:6px;text-decoration:none;border:1px solid var(--line2);transition:border-color .18s,color .18s}
+  .btn-b:hover{border-color:var(--oborder);color:var(--orange)}
+  .cta-contacts{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+  .ccon{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .ccon a{color:var(--orange);text-decoration:none}
+  .ccon a:hover{text-decoration:underline}
+  .cdot{width:4px;height:4px;border-radius:50%;background:var(--orange);opacity:.6}
+
+  /* FOOTER */
+  .foot{text-align:center;padding:36px 0 0;font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:56px;position:relative;z-index:1}
+  .foot a{color:var(--white2);text-decoration:none}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr a1">
+  <div class="logo">
+    <div class="logo-box">
+      <svg viewBox="0 0 32 32" fill="none">
+        <path d="M7 4h12l6 6v18H7V4z" stroke="#0B1F4A" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <path d="M19 4v6h6" stroke="#0B1F4A" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M11 16h10M11 20h10M11 12h5" stroke="#0B1F4A" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="logo-name">29DOCS</div>
+  </div>
+  <div class="hdr-tag">Especialista Farmacêutica · EDMS · GreenDocs</div>
+</header>
+
+<!-- HERO — CUSTOMER'S WORLD FIRST -->
+<section class="hero">
+
+  <h1 class="a2">Uma auditoria da ANVISA<br>não avisa quando vai chegar.<br><span class="o">Seus documentos estão prontos?</span></h1>
+  <div class="hero-line a3"></div>
+  <p class="hero-sub a3">Na indústria farmacêutica, documentos desorganizados não são apenas um problema operacional — são um risco regulatório. Cada SOP desatualizado, cada aprovação por e-mail, cada versão errada em produção pode custar multas, embargos ou recalls.</p>
+
+  <div class="scenario-head a4">Isso soa familiar para você?</div>
+  <div class="scenarios a4">
+    <div class="sc">
+      <div class="sc-txt"><strong>"Na última inspeção levamos horas para localizar os registros de aprovação."</strong> A trilha de auditoria existia, mas estava espalhada em e-mails e pastas compartilhadas.</div>
+    </div>
+    <div class="sc">
+      <div class="sc-txt"><strong>"Descobrimos que produção estava usando uma versão antiga do protocolo."</strong> O documento correto estava aprovado, mas ninguém sabia onde encontrá-lo.</div>
+    </div>
+    <div class="sc">
+      <div class="sc-txt"><strong>"Aprovamos SOPs por e-mail, sem workflow formal."</strong> Ninguém sabe exatamente quem aprovou o quê e quando. Em uma inspeção GxP, isso não é aceitável.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- PAIN → CONSEQUENCE MAP -->
+<section class="section a4">
+  <div class="s-label">Seus desafios reais</div>
+  <h2 class="s-title">Os problemas que tiram o sono de gestores farmacêuticos.</h2>
+  <p class="s-sub">Cada desafio documental na farmacêutica tem uma consequência direta em compliance, produtividade e risco regulatório.</p>
+
+  <div class="pain-rows">
+    <div class="pain-row">
+      <div class="pain-left">
+        <div>
+          <div class="pain-label lbl-red">Desafio 01</div>
+          <div class="pain-title-main">Documentos descentralizados e sem versão única</div>
+          <div class="pain-desc">SOPs, protocolos e registros de lote espalhados em drives, e-mails e sistemas desconectados. Cada área mantém sua própria cópia — ninguém sabe qual é a vigente.</div>
+        </div>
+      </div>
+      <div class="pain-arrow">→</div>
+      <div class="pain-right">
+        <div>
+          <div class="pain-label lbl-orange">Consequência</div>
+          <div class="pain-title-main">Produção usando versão errada</div>
+          <div class="pain-desc">Desvios de qualidade gerados por uso de documentos desatualizados. Em inspeções da ANVISA ou FDA, isso é não-conformidade grave com risco de recall.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pain-row">
+      <div class="pain-left">
+        <div>
+          <div class="pain-label lbl-red">Desafio 02</div>
+          <div class="pain-title-main">Aprovações manuais sem trilha de auditoria</div>
+          <div class="pain-desc">Fluxos de aprovação por e-mail, WhatsApp ou assinatura em papel. Não há registro estruturado de quem aprovou, quando e em qual versão.</div>
+        </div>
+      </div>
+      <div class="pain-arrow">→</div>
+      <div class="pain-right">
+        <div>
+          <div class="pain-label lbl-orange">Consequência</div>
+          <div class="pain-title-main">Falha em inspeção GxP</div>
+          <div class="pain-desc">Sem audit trail completo, a empresa não consegue demonstrar conformidade com GMP, GLP ou GCP. Resultado: advertência, embargo ou suspensão de registro.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pain-row">
+      <div class="pain-left">
+        <div>
+          <div class="pain-label lbl-red">Desafio 03</div>
+          <div class="pain-title-main">Sem rastreabilidade de ciclo de vida documental</div>
+          <div class="pain-desc">Impossível saber com rapidez quem acessou, editou ou aprovou um documento. A reconstrução do histórico para inspeções consome dias de trabalho manual.</div>
+        </div>
+      </div>
+      <div class="pain-arrow">→</div>
+      <div class="pain-right">
+        <div>
+          <div class="pain-label lbl-orange">Consequência</div>
+          <div class="pain-title-main">Horas perdidas durante auditorias</div>
+          <div class="pain-desc">Equipes de qualidade gastam dias reunindo evidências que deveriam estar disponíveis em segundos. Isso aumenta o risco de respostas incompletas ao inspetor.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pain-row">
+      <div class="pain-left">
+        <div>
+          <div class="pain-label lbl-red">Desafio 04</div>
+          <div class="pain-title-main">Projetos de P&D sem controle documental integrado</div>
+          <div class="pain-desc">Documentos de projetos (dossiês, protocolos, resultados) gerenciados fora do sistema de qualidade. PMO não tem visibilidade do status documental dos projetos em andamento.</div>
+        </div>
+      </div>
+      <div class="pain-arrow">→</div>
+      <div class="pain-right">
+        <div>
+          <div class="pain-label lbl-orange">Consequência</div>
+          <div class="pain-title-main">Atraso no registro sanitário</div>
+          <div class="pain-desc">Documentação incompleta ou inconsistente em submissões regulatórias resulta em exigências da ANVISA que atrasam o lançamento do produto em meses ou anos.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pain-row">
+      <div class="pain-left">
+        <div>
+          <div class="pain-label lbl-red">Desafio 05</div>
+          <div class="pain-title-main">Acesso a documentos sensíveis sem controle</div>
+          <div class="pain-desc">Fórmulas, dados de ensaios clínicos e dossiês de registro acessíveis por qualquer usuário, sem rastreamento de leitura ou controle por perfil de acesso.</div>
+        </div>
+      </div>
+      <div class="pain-arrow">→</div>
+      <div class="pain-right">
+        <div>
+          <div class="pain-label lbl-orange">Consequência</div>
+          <div class="pain-title-main">Exposição de propriedade intelectual</div>
+          <div class="pain-desc">Vazamento de dados de P&D ou informações de pacientes compromete a segurança jurídica e pode gerar sanções pela LGPD além do risco competitivo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- REGULATORY REQUIREMENTS -->
+<section class="section a5">
+  <div class="s-label">Obrigações regulatórias</div>
+  <h2 class="s-title">Sua empresa precisa estar em conformidade com tudo isso.</h2>
+  <p class="s-sub">E a resposta para cada uma dessas exigências passa por um sistema robusto de gestão documental.</p>
+  <div class="reg-strip">
+    <span class="reg-label">Regulamentações que impactam você:</span>
+    <span class="reg-tag" style="background:rgba(232,101,10,0.22);border-color:rgba(232,101,10,0.55);font-size:13px;padding:6px 18px;">ANVISA RDC 301/2019 — Anexo 11</span>
+    <span class="reg-tag">ANVISA RDC 658/22</span>
+    <span class="reg-tag">FDA 21 CFR Part 11</span>
+    <span class="reg-tag">GxP (GMP · GLP · GCP)</span>
+    <span class="reg-tag">ALCOA+ Data Integrity</span>
+    <span class="reg-tag">ICH Q10</span>
+    <span class="reg-tag">ISO 9001</span>
+    <span class="reg-tag">LGPD</span>
+    <span class="reg-tag">EMA Guidelines</span>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- RDC 301/2019 UNIQUE POSITIONING -->
+<section class="section a5">
+  <div class="s-label">Posicionamento único no mercado</div>
+  <h2 class="s-title">A única solução SaaS compatível com a RDC 301/2019 — Anexo 11.</h2>
+  <p class="s-sub">A RDC 301/2019, em seu Anexo 11 sobre Sistemas Computadorizados, é a norma mais exigente da ANVISA para a indústria farmacêutica. Ela rege validação, integridade de dados e segurança de sistemas digitais em ambientes de fabricação regulada. O GreenDocs é a única plataforma SaaS brasileira que atende integralmente a esses requisitos — posicionando sua empresa num nível de compliance que poucos sistemas no mundo SaaS conseguem entregar.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px">
+
+    <div style="background:var(--panel);border:1px solid var(--line2);padding:24px 26px;grid-column:1/-1;border-radius:8px 8px 0 0;border-bottom:none">
+      <div style="font-family:var(--display);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:8px">O que exige o Anexo 11</div>
+      <div style="font-family:var(--display);font-size:clamp(16px,2.5vw,22px);font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.02em">Validação · Integridade de Dados · Segurança de Sistemas Computadorizados</div>
+    </div>
+
+    <div style="background:var(--navy2);border:1px solid var(--line2);border-left:3px solid var(--red);padding:22px 24px;border-top:none;border-right:none">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px">Pilar 1 — Validação de Sistemas (CSV)</div>
+      <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px">O que a norma exige</div>
+      <div style="font-size:12px;font-weight:300;color:var(--white2);line-height:1.65;margin-bottom:14px">Validação baseada em risco com documentação estruturada: URS, FS, DS, IQ, OQ, PQ. Rastreabilidade entre requisitos regulatórios, de negócio e funcionalidades do sistema. Evidências de teste e aprovação formal com trilha de auditoria.</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:6px">Como o GreenDocs atende</div>
+      <div style="font-size:12px;font-weight:300;color:var(--white2);line-height:1.65">Estrutura e controla toda a documentação de validação dentro da própria plataforma. Rastreabilidade bidirecional entre requisitos e funcionalidades. Não só é validável — facilita a validação contínua ao longo de todo o ciclo de vida do sistema.</div>
+    </div>
+
+    <div style="background:var(--navy2);border:1px solid var(--line2);border-left:3px solid var(--red);padding:22px 24px;border-top:none">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px">Pilar 2 — Integridade de Dados</div>
+      <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px">O que a norma exige</div>
+      <div style="font-size:12px;font-weight:300;color:var(--white2);line-height:1.65;margin-bottom:14px">Dados completos, consistentes, precisos e rastreáveis ao longo de todo o ciclo de vida. Conformidade com os princípios ALCOA+ (Attributable, Legible, Contemporaneous, Original, Accurate).</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:6px">Como o GreenDocs atende</div>
+      <div style="font-size:12px;font-weight:300;color:var(--white2);line-height:1.65">Audit trail imutável e automático em cada ação sobre o documento. Registro atribuído, datado e vinculado ao usuário autenticado. Histórico completo que comprova conformidade ALCOA+ a qualquer momento, sem reconstrução manual.</div>
+    </div>
+
+    <div style="background:var(--navy2);border:1px solid var(--line2);border-left:3px solid var(--red);padding:22px 24px;border-top:none;border-right:none">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px">Pilar 3 — Segurança de Sistemas</div>
+      <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px">O que a norma exige</div>
+      <div style="font-size:12px;font-weight:300;color:var(--white2);line-height:1.65;margin-bottom:14px">Controle de acesso baseado em perfis, proteção contra acesso não autorizado, gestão de senhas, bloqueio de usuários e segurança física e lógica dos dados armazenados.</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:6px">Como o GreenDocs atende</div>
+      <div style="font-size:12px;font-weight:300;color:var(--white2);line-height:1.65">Controle de acesso granular por usuário, perfil e tipo de documento. Autenticação segura, gestão de permissões por cofre e rastreamento de cada leitura. Infraestrutura SaaS com segurança gerenciada — sem risco de gestão local.</div>
+    </div>
+
+    <div style="background:var(--navy2);border:1px solid var(--line2);border-left:3px solid var(--red);padding:22px 24px;border-top:none">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px">Pilar 4 — Operação Assistida Pós Go-Live</div>
+      <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px">O que a norma exige</div>
+      <div style="font-size:12px;font-weight:300;color:var(--white2);line-height:1.65;margin-bottom:14px">Estabilidade operacional contínua e evidências documentadas após a ativação do sistema. O ciclo de validação não termina no go-live — ele continua durante toda a operação.</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:6px">Como o GreenDocs atende</div>
+      <div style="font-size:12px;font-weight:300;color:var(--white2);line-height:1.65">A 29docs conduz a operação assistida com geração contínua de evidências pós-go-live. Suporte especializado garante estabilidade e conformidade ao longo de todo o ciclo de vida do sistema, não apenas na implantação.</div>
+    </div>
+
+  </div>
+  <div style="background:linear-gradient(90deg,var(--orange),var(--orange2));border-radius:0 0 8px 8px;padding:20px 26px;text-align:center">
+    <div style="font-family:var(--display);font-size:clamp(14px,2vw,18px);font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--white);line-height:1.3">O GreenDocs não só é validável — ele é a espinha dorsal de compliance digital que a RDC 301/2019 exige<br>e que nenhum outro SaaS brasileiro entrega.</div>
+  </div>
+</section>
+<section class="section a5">
+  <div class="s-label">Como resolvemos</div>
+  <h2 class="s-title">Cada desafio tem uma resposta direta.</h2>
+  <p class="s-sub">Implementamos o GreenDocs — única plataforma EDMS SaaS 100% brasileira compatível com a RDC 301/2019 Anexo 11 — configurado especificamente para os fluxos documentais da indústria farmacêutica, com suporte técnico e regulatório da equipe 29docs.</p>
+
+  <div class="sol-map">
+    <div class="sol-row">
+      <div class="sol-num-col"><div class="sol-num-txt">01</div></div>
+      <div class="sol-body">
+        <div>
+          <div class="sol-pain-ref">Problema</div>
+          <div class="sol-pain-title">Documentos descentralizados</div>
+          <div class="sol-pain-desc">Múltiplas versões em drives e e-mails, sem controle de qual é a vigente.</div>
+        </div>
+        <div>
+          <div class="sol-fix-ref">Solução GreenDocs</div>
+          <div class="sol-fix-title">Single Source of Truth</div>
+          <div class="sol-fix-desc">Repositório único com versionamento automático. A versão vigente é sempre uma só, visível por todos os autorizados.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sol-row">
+      <div class="sol-num-col"><div class="sol-num-txt">02</div></div>
+      <div class="sol-body">
+        <div>
+          <div class="sol-pain-ref">Problema</div>
+          <div class="sol-pain-title">Aprovações sem audit trail</div>
+          <div class="sol-pain-desc">E-mails e assinaturas em papel que não geram trilha rastreável para inspeção.</div>
+        </div>
+        <div>
+          <div class="sol-fix-ref">Solução GreenDocs</div>
+          <div class="sol-fix-title">Workflow eletrônico com assinatura digital</div>
+          <div class="sol-fix-desc">Fluxos de aprovação configuráveis com notificações, prazos e assinatura eletrônica. Audit trail completo, automático e imutável.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sol-row">
+      <div class="sol-num-col"><div class="sol-num-txt">03</div></div>
+      <div class="sol-body">
+        <div>
+          <div class="sol-pain-ref">Problema</div>
+          <div class="sol-pain-title">Rastreabilidade manual e lenta</div>
+          <div class="sol-pain-desc">Reconstruir histórico para inspeções consome dias de trabalho da equipe de qualidade.</div>
+        </div>
+        <div>
+          <div class="sol-fix-ref">Solução GreenDocs</div>
+          <div class="sol-fix-title">Histórico completo em segundos</div>
+          <div class="sol-fix-desc">Cada acesso, edição e aprovação registrado automaticamente. Relatórios de rastreabilidade disponíveis em segundos — não dias.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sol-row">
+      <div class="sol-num-col"><div class="sol-num-txt">04</div></div>
+      <div class="sol-body">
+        <div>
+          <div class="sol-pain-ref">Problema</div>
+          <div class="sol-pain-title">Projetos de P&D sem visibilidade documental</div>
+          <div class="sol-pain-desc">PMO não tem controle centralizado dos documentos por projeto, fase ou status.</div>
+        </div>
+        <div>
+          <div class="sol-fix-ref">Solução GreenDocs</div>
+          <div class="sol-fix-title">Gestão por portfólio de projetos</div>
+          <div class="sol-fix-desc">Visão integrada de todos os projetos, documentos e status de aprovação em um painel único. Cronogramas documentais alinhados com o roadmap de P&D.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sol-row">
+      <div class="sol-num-col"><div class="sol-num-txt">05</div></div>
+      <div class="sol-body">
+        <div>
+          <div class="sol-pain-ref">Problema</div>
+          <div class="sol-pain-title">Acesso sem controle a documentos sensíveis</div>
+          <div class="sol-pain-desc">Dados de ensaios e dossiês acessíveis sem rastreamento ou perfil de acesso.</div>
+        </div>
+        <div>
+          <div class="sol-fix-ref">Solução GreenDocs</div>
+          <div class="sol-fix-title">Controle de acesso granular</div>
+          <div class="sol-fix-desc">Permissões por usuário, grupo, cofre ou tipo de documento. Registro de cada leitura. Conformidade com LGPD e requisitos de confidencialidade de P&D.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- GREENDOCS FEATURE HIGHLIGHT -->
+<section class="section a5">
+  <div class="gd-band">
+    <div>
+      <div class="gd-label">Powered by GreenDocs · W3K</div>
+      <div class="gd-title">A única plataforma SaaS brasileira compatível com RDC 301/2019.</div>
+      <div class="gd-desc">O GreenDocs é desenvolvido pela W3K com foco em <em>Tech Driven Governance</em>. É a única solução SaaS do mercado brasileiro que atende integralmente ao Anexo 11 da RDC 301/2019 — a norma ANVISA que rege sistemas computadorizados em ambientes de fabricação regulada. SaaS, sem CapEx de infraestrutura, ativo em dias, e configurado pela 29docs para o seu ambiente farmacêutico específico.</div>
+    </div>
+    <div class="gd-features">
+      <div class="gd-feat">
+        <div class="gd-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#E8650A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="gd-feat-txt"><strong>Compatível com RDC 301/2019 Anexo 11</strong> — único SaaS brasileiro nessa categoria</div>
+      </div>
+      <div class="gd-feat">
+        <div class="gd-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#E8650A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="gd-feat-txt"><strong>Suporte completo a CSV</strong> — URS, FS, DS, IQ, OQ, PQ estruturados na plataforma</div>
+      </div>
+      <div class="gd-feat">
+        <div class="gd-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#E8650A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="gd-feat-txt"><strong>Audit trail imutável e automático</strong> — conformidade ALCOA+ em cada ação</div>
+      </div>
+      <div class="gd-feat">
+        <div class="gd-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#E8650A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="gd-feat-txt"><strong>Workflows de aprovação com assinatura eletrônica</strong> rastreável e juridicamente válida</div>
+      </div>
+      <div class="gd-feat">
+        <div class="gd-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#E8650A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="gd-feat-txt"><strong>Gestão de portfólio de projetos</strong> — visibilidade documental integrada para PMO e P&D</div>
+      </div>
+      <div class="gd-feat">
+        <div class="gd-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#E8650A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="gd-feat-txt"><strong>Controle de acesso granular</strong> — conformidade com LGPD e segurança de P&D</div>
+      </div>
+      <div class="gd-feat">
+        <div class="gd-check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#E8650A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="gd-feat-txt"><strong>Integração com ERP, LIMS e sistemas de qualidade</strong> existentes</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- OUTCOMES -->
+<section class="section a6">
+  <div class="s-label">Resultados esperados</div>
+  <h2 class="s-title">O que muda para o seu time na prática.</h2>
+  <div class="outcomes">
+    <div class="outcome">
+      <div class="out-num">−80%</div>
+      <div class="out-title">Tempo de resposta a inspeções</div>
+      <div class="out-desc">Audit trails disponíveis em segundos. Equipe de qualidade deixa de gastar dias reunindo evidências para inspetores.</div>
+    </div>
+    <div class="outcome">
+      <div class="out-num">Zero</div>
+      <div class="out-title">Risco de versão errada em produção</div>
+      <div class="out-desc">Com Single Source of Truth, todos acessam a versão vigente. Desvios de qualidade por documentação desatualizada tornam-se história.</div>
+    </div>
+    <div class="outcome">
+      <div class="out-num">100%</div>
+      <div class="out-title">Rastreabilidade de aprovações</div>
+      <div class="out-desc">Cada SOP, protocolo e registro aprovado com trilha completa: quem, quando, qual versão. Conformidade GxP automática.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- HOW WE WORK -->
+<section class="section a6">
+  <div class="s-label">Como trabalhamos</div>
+  <h2 class="s-title">Do diagnóstico ao go-live — sem interromper sua operação.</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="sbody">
+        <div class="stitle">Diagnóstico documental gratuito</div>
+        <div class="sdesc">30 minutos para mapear seus fluxos atuais, identificar lacunas de compliance e entender o ambiente de sistemas existente.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sbody">
+        <div class="stitle">Proposta personalizada com mapeamento regulatório</div>
+        <div class="sdesc">Apresentamos uma solução específica para sua empresa, com escopo, cronograma e ROI baseado nos seus gaps de conformidade.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">3</div>
+      <div class="sbody">
+        <div class="stitle">Implementação em sprints semanais</div>
+        <div class="sdesc">Configuração, migração de documentos existentes e treinamento da equipe. Entrega contínua — você vê valor a cada sprint, não só no go-live.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">4</div>
+      <div class="sbody">
+        <div class="stitle">Suporte e evolução contínua pós go-live</div>
+        <div class="sdesc">Permanecemos presentes após a virada. Ajustes, novas regulamentações, expansão de módulos — somos sua equipe de gestão documental.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section class="cta a6">
+  <h2 class="cta-h">Seu próximo processo de inspeção<br>pode ser sua melhor<br>experiência de inspeção.</h2>
+  <p class="cta-s">30 minutos de conversa. Sem pitch. Queremos entender sua realidade documental antes de falar sobre qualquer solução.</p>
+  <div class="cta-btns">
+    <a href="https://wa.me/5551981444746" class="btn-a">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.122 1.532 5.857L0 24l6.347-1.506A11.93 11.93 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.89 0-3.663-.5-5.2-1.373l-.373-.22-3.864.917.978-3.767-.243-.387A9.937 9.937 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      Falar com especialista
+    </a>
+    <a href="mailto:mauricio@29docs.com" class="btn-b">Solicitar diagnóstico gratuito</a>
+  </div>
+  <div class="cta-contacts">
+    <div class="ccon"><div class="cdot"></div><a href="mailto:mauricio@29docs.com">mauricio@29docs.com</a></div>
+    <div class="ccon"><div class="cdot"></div><a href="tel:+5551981444746">+55 51 98144-4746</a></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>© 2026 29docs Soluções & Consultoria · CNPJ 62.571.768/0001-72 · Parceiro oficial W3K / GreenDocs · <a href="mailto:mauricio@29docs.com">mauricio@29docs.com</a></p>
+</footer>
+
+</body>
+</html>
